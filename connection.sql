@@ -1,4 +1,5 @@
 
+
 CREATE TABLE dim_date (
     date_id INT PRIMARY KEY,
     date DATE NOT NULL,
@@ -146,3 +147,19 @@ ORDER BY z.date_id DESC
 LIMIT 5;
 
 CREATE TABLE fact_home_value_trend_backup AS TABLE fact_zhvi;
+
+SELECT DISTINCT d_loc.state 
+FROM public.fact_listings f
+JOIN public.dim_location d_loc ON f.location_id = d_loc.location_id
+ORDER BY d_loc.state;
+
+select SUM(amount) from transactions
+where transaction_date >= current_date - interval '30days'
+group by user_id
+having count(transaction_id) > 5
+
+SELECT 
+	user_id,
+	Max(amount) OVER(PARTITION BY user_id order by amount desc) as max_amount
+FROM transactions
+
